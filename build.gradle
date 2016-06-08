@@ -1,0 +1,22 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        jcenter()
+
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.google.gms:google-services:1.3.0-beta1'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+//        maven { url 'https://maven.fabric.io/public' } // maven for twitter sdk
+        maven { url "https://clojars.org/repo/" } // automatically save and restore instance state
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" } // maven for active android
+
+    }
+}

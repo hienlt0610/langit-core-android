@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/fetchable_header_container">
+
+    <RelativeLayout
+        android:id="@+id/fetchable_id_header"
+        style="@style/fetchable_header">
+
+        <ImageView
+            android:id="@+id/fetchable_id_image"
+            style="@style/fetchable_arrow"
+            android:contentDescription="@null" />
+
+        <ProgressBar
+            android:id="@+id/fetchable_id_spinner"
+            style="@style/fetchable_spinner" />
+
+        <LinearLayout
+            android:id="@+id/fetchable_id_textwrapper"
+            style="@style/fetchable_textwrapper">
+
+            <TextView
+                android:id="@+id/fetchable_id_text"
+                style="@style/fetchable_text" />
+
+            <TextView
+                android:id="@+id/fetchable_id_last_updated"
+                style="@style/fetchable_last_updated" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

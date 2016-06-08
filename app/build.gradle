@@ -1,0 +1,88 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion 'Google Inc.:Google APIs:23'
+    buildToolsVersion '23.0.3'
+    useLibrary 'org.apache.http.legacy'
+    defaultConfig {
+        applicationId "com.example.commonframe"
+        minSdkVersion 17
+        targetSdkVersion 23
+//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+}
+
+final String ANDROID_SUPPORT_VERSION = '23.4.0'
+final String GOOGLE_PLAY_SERVICE_VERSION = '9.0.2'
+
+dependencies {
+
+    /* NETWORK SUPPORT LIBRARY */
+    compile project(':googlevolleynetwork_lib')
+//    compile 'com.android.volley:volley:1.0.0'
+    /* DATABASE SUPPORT LIBRARIES */
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+
+    /* CORE GOOGLE ANDROID */
+    compile "com.android.support:design:${ANDROID_SUPPORT_VERSION}"
+    compile "com.android.support:recyclerview-v7:${ANDROID_SUPPORT_VERSION}"
+    compile "com.android.support:appcompat-v7:${ANDROID_SUPPORT_VERSION}"
+    compile "com.google.android.gms:play-services-gcm:${GOOGLE_PLAY_SERVICE_VERSION}"
+    compile "com.google.android.gms:play-services-maps:${GOOGLE_PLAY_SERVICE_VERSION}"
+    compile "com.google.android.gms:play-services-base:${GOOGLE_PLAY_SERVICE_VERSION}"
+
+    /* NETWORK */
+    compile 'commons-net:commons-net:3.3'
+    compile('org.apache.httpcomponents:httpmime:4.3.6') {
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+    compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+
+    /* LEAK DETECTION */
+    //compile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+
+    /* SOCIAL NETWORK */
+    //    compile 'com.facebook.android:facebook-android-sdk:4.1.0'
+    //    compile('com.twitter.sdk.android:twitter:1.3.2@aar') {
+    //        transitive = true;
+    //    }
+
+    /* UTILITIES */
+    //    compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'ch.acra:acra:4.6.2'
+    compile 'com.jakewharton:butterknife:8.0.1'
+    apt 'com.jakewharton:butterknife-compiler:8.0.1'
+    compile 'frankiesardo:icepick:3.1.0'
+    provided 'frankiesardo:icepick-processor:3.1.0'
+
+    /* TESTING */
+//    androidTestCompile 'com.android.support:support-annotations:24.0.0-alpha1'
+//    androidTestCompile 'com.android.support.test:runner:0.4.1'
+//    androidTestCompile 'com.android.support.test:rules:0.4.1'
+//    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+//    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.1'
+//    androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2.1'
+
+}

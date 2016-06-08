@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ScrollBarIndicator">
+        <attr name="isIndicable" format="boolean" />
+        <attr name="indicatorInAnimation" format="reference" />
+        <attr name="indicatorOutAnimation" format="reference" />
+        <attr name="indicatorView" format="reference" />
+    </declare-styleable>
+</resources>

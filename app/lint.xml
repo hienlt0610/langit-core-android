@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><!--suppress ALL -->
+<lint>
+    <issue id="BackButton" severity="ignore" />
+    <issue id="EasterEgg" severity="warning" />
+    <issue id="FieldGetter" severity="warning" />
+    <issue id="IconColors" severity="ignore" />
+    <issue id="IconDensities" severity="ignore" />
+    <issue id="IconDuplicates" severity="ignore" />
+    <issue id="IconExpectedSize" severity="warning" />
+    <issue id="LabelFor" severity="ignore" />
+    <issue id="MissingTranslation" severity="ignore" />
+    <issue id="NewerVersionAvailable" severity="warning" />
+    <issue id="Overdraw" severity="ignore" />
+    <issue id="SelectableText" severity="ignore" />
+    <issue id="StopShip" severity="warning" />
+    <issue id="TypographyQuotes" severity="warning" />
+    <issue id="UnusedIds" severity="ignore" />
+    <issue id="UnusedResources" severity="ignore" />
+    <issue id="UselessParent" severity="ignore" />
+</lint>
