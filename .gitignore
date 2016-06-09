@@ -34,3 +34,6 @@ proguard/
 
 # Android Studio captures folder
 captures/
+
+# Mac OS automatical generation file
+.DS_Store

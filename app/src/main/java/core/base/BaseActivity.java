@@ -75,7 +75,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseInte
      * The flag indicating that the activity is finished and should free all of
      * resources at <code>onStop()</code> method
      */
-    protected boolean isFinished = false;
+    private boolean isFinished = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,12 +90,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseInte
                 finish();
                 return;
             }
-        } else {
+        } else
             ActionTracker.openActionLog();
-        }
+
         TAG = getClass().getName();
         overridePendingTransition(Constant.DEFAULT_ADD_ANIMATION[0],
                 Constant.DEFAULT_ADD_ANIMATION[1]);
+
         Icepick.restoreInstanceState(this, savedInstanceState);
         // ConnectivityReceiver.registerListener(this);
         onBaseCreate();
@@ -364,7 +365,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseInte
         return BaseApplication.getContext();
     }
 
-    public void cancelRequest() {
+    private void cancelRequest() {
         if (BaseProperties.wsRequester != null)
             BaseProperties.wsRequester.cancelAll(null);
         BaseProperties.wsRequester = null;

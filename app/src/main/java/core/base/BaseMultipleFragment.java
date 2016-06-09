@@ -55,6 +55,7 @@ public abstract class BaseMultipleFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onBaseCreate();
+        setRetainInstance(true);
     }
 
     @Override
@@ -455,17 +456,17 @@ public abstract class BaseMultipleFragment extends Fragment implements
     }
 
     protected void addFragment(int containerId, BaseMultipleFragment fragment,
-                               String tag, boolean addBackStack) {
+                               String tag) {
         if (getActivity() != null
                 && getActivity() instanceof BaseMultipleFragmentActivity)
             ((BaseMultipleFragmentActivity) getActivity()).addFragment(
-                    containerId, fragment, tag, addBackStack);
+                    containerId, fragment, tag);
         else if (getActiveActivity() != null
                 && getActiveActivity() instanceof BaseMultipleFragmentActivity)
             ((BaseMultipleFragmentActivity) getActiveActivity()).addFragment(
-                    containerId, fragment, tag, addBackStack);
+                    containerId, fragment, tag);
         else
-            activeActivity.addFragment(containerId, fragment, tag, addBackStack);
+            activeActivity.addFragment(containerId, fragment, tag);
     }
 
     protected void replaceFragment(int containerId,
