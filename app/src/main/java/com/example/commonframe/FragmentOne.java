@@ -58,8 +58,6 @@ public class FragmentOne extends BaseMultipleFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             user = (User) bundle.getSerializable(USER_KEY);
-        } else {
-            return;
         }
     }
 

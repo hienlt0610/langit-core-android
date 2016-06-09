@@ -11,6 +11,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
@@ -519,8 +520,8 @@ public abstract class BaseMultipleFragmentActivity extends AppCompatActivity
                 if (fragments.size() <= 1 && Utils.isEmpty(toTag)) {
                     onLastFragmentBack(containerId);
                 } else {
-                    FragmentTransaction transaction = getSupportFragmentManager()
-                            .beginTransaction();
+//                    FragmentTransaction transaction = getSupportFragmentManager()
+//                            .beginTransaction();
                     for (int i = fragments.size() - 1; i > 0; --i) {
                         BaseMultipleFragment entry = (BaseMultipleFragment) getSupportFragmentManager().findFragmentByTag(fragments.get(i));
 //                        BaseMultipleFragment entry = fragments.get(i);
@@ -530,22 +531,25 @@ public abstract class BaseMultipleFragmentActivity extends AppCompatActivity
                                 animateBackOut(view, entry.getBackOutAnimation());
                                 entry.onBasePause();
                                 fragments.remove(i);
-                                transaction.remove(entry);
+                                getSupportFragmentManager().popBackStackImmediate();
+//                                transaction.remove(entry);
                                 ActionTracker.exitScreen(entry.getTag());
                                 break;
                             } else {
-                                if (toTag.equals(entry.getTag()))
+                                if (toTag.equals(entry.getTag())) {
+                                    getSupportFragmentManager().popBackStackImmediate(toTag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                                     break;
+                                }
                                 animateBackOut(view, entry.getBackOutAnimation());
                                 entry.onBasePause();
                                 fragments.remove(i);
-                                transaction.remove(entry);
+//                                transaction.remove(entry);
                                 ActionTracker.exitScreen(entry.getTag());
                             }
                         }
                     }
-                    transaction.commit();
-                    getSupportFragmentManager().executePendingTransactions();
+//                    transaction.commit();
+//                    getSupportFragmentManager().executePendingTransactions();
                     BaseMultipleFragment fragment = getTopFragment(containerId);
                     if (fragment != null) {
                         if (fragment.getView() != null) {
@@ -569,22 +573,23 @@ public abstract class BaseMultipleFragmentActivity extends AppCompatActivity
                     if (last != null) {
                         animateAddOut(containerId);
                     }
-                    FragmentTransaction transaction = getSupportFragmentManager()
-                            .beginTransaction();
-                    ArrayList<BaseMultipleFragment> fragments = new ArrayList<>();
-                    for (String tag : tags)
-                        fragments.add((BaseMultipleFragment) getSupportFragmentManager().findFragmentByTag(tag));
-
-                    for (BaseMultipleFragment fragment : fragments) {
-                        transaction.remove(fragment);
-                    }
-
-                    if (transaction != null) {
-                        transaction.commit();
-                        getSupportFragmentManager()
-                                .executePendingTransactions();
-                    }
                     clearStack(containerId);
+                    getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                    FragmentTransaction transaction = getSupportFragmentManager()
+//                            .beginTransaction();
+//                    ArrayList<BaseMultipleFragment> fragments = new ArrayList<>();
+//                    for (String tag : tags)
+//                        fragments.add((BaseMultipleFragment) getSupportFragmentManager().findFragmentByTag(tag));
+//
+//                    for (BaseMultipleFragment fragment : fragments) {
+//                        transaction.remove(fragment);
+//                    }
+//
+//                    if (transaction != null) {
+//                        transaction.commit();
+//                        getSupportFragmentManager()
+//                                .executePendingTransactions();
+//                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -618,7 +623,9 @@ public abstract class BaseMultipleFragmentActivity extends AppCompatActivity
                 transaction
                         .setCustomAnimations(anim,
                                 0, 0, 0) // add in animation
-                        .add(containerId, fragment, tag).commit();
+                        .replace(containerId, fragment, tag)
+                        .addToBackStack(tag)
+                        .commit();
                 getSupportFragmentManager().executePendingTransactions();
             } else {
                 boolean isExist = false;
@@ -642,7 +649,9 @@ public abstract class BaseMultipleFragmentActivity extends AppCompatActivity
                                     anim, 0, 0, 0) // add
                             // in
                             // animation
-                            .add(containerId, fragment, tag).commit();
+                            .replace(containerId, fragment, tag)
+                            .addToBackStack(tag)
+                            .commit();
                     getSupportFragmentManager().executePendingTransactions();
                 } else {
                     backStack(containerId, tag);

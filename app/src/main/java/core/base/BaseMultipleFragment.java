@@ -55,7 +55,6 @@ public abstract class BaseMultipleFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onBaseCreate();
-        setRetainInstance(true);
     }
 
     @Override

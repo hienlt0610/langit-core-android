@@ -47,8 +47,6 @@ public class FragmentTwo extends BaseMultipleFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             user = (User) bundle.getSerializable(USER_KEY);
-        } else {
-            return;
         }
     }
 
@@ -71,7 +69,7 @@ public class FragmentTwo extends BaseMultipleFragment {
     @Override
     public void onInitializeViewData() {
         DLog.d(TAG, "onInitializeViewData");
-        textView2.setText(user.toString());
+        textView2.setText(getString(R.string.f2_content, user.toString()));
     }
 
     @Override

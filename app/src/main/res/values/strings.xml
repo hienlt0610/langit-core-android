@@ -67,4 +67,9 @@
     <!-- End Notification -->
 
 
+    <string name="button_1">Add Device</string>
+    <string name="button_2">Go to F2</string>
+
+    <string name="f2_content">Test content:\n%1$s</string>
+
 </resources>

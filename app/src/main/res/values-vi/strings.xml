@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="button_1">Them thiet bi</string>
+    <string name="button_2">Chuyen toi F2</string>
+
+    <string name="f2_content">Noi dung test:\n%1$s</string>
+
+
+</resources>
