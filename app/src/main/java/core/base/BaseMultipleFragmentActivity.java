@@ -1,7 +1,7 @@
 package core.base;
 
 import android.content.Intent;
-import android.support.annotation.LayoutRes;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import com.example.commonframe.R;
 
 import core.util.Constant;
+import core.util.DLog;
 import core.util.SingleClick.SingleClickListener;
 import core.util.Utils;
 
@@ -36,7 +37,7 @@ import core.util.Utils;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public abstract class BaseMultipleFragmentActivity extends BaseActivity
-        implements BaseInterface, SingleClickListener {
+        implements BaseInterface, SingleClickListener, FragmentManager.OnBackStackChangedListener {
     /**
      * Tag of BaseFragmentActivity class for Log usage
      */
@@ -65,6 +66,15 @@ public abstract class BaseMultipleFragmentActivity extends BaseActivity
     protected abstract void onInitializeFragments();
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm != null) {
+            fm.addOnBackStackChangedListener(this);
+        }
+    }
+
+    @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
         // this code is to prevent using commitAllowStateLoss
@@ -72,6 +82,15 @@ public abstract class BaseMultipleFragmentActivity extends BaseActivity
             isFragmentsInitialized = true;
             onInitializeFragments();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm != null) {
+            fm.removeOnBackStackChangedListener(this);
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -122,7 +141,7 @@ public abstract class BaseMultipleFragmentActivity extends BaseActivity
         }
     }
 
-    protected void addFragment(int containerId, BaseMultipleFragment fragment, String tag) {
+    protected void addFragment(int containerId, BaseMultipleFragment fragment, String tag, boolean addBackStack) {
         BaseMultipleFragment top = getTopFragment(containerId);
         if (top != null) {
             if (tag.equals(top.getTag()))
@@ -135,19 +154,19 @@ public abstract class BaseMultipleFragmentActivity extends BaseActivity
             if (fm.getBackStackEntryCount() > 0) {
                 boolean isExisted = fm.findFragmentByTag(tag) != null;
                 if (!isExisted) {
-                    doAddFragment(containerId, fragment, tag);
+                    doAddFragment(containerId, fragment, tag, addBackStack);
                 } else {
                     backStack(containerId, tag);
                 }
             } else {
                 if (mainContainerId == -1)
                     mainContainerId = containerId;
-                doAddFragment(containerId, fragment, tag);
+                doAddFragment(containerId, fragment, tag, addBackStack);
             }
         }
     }
 
-    private void doAddFragment(int containerId, BaseMultipleFragment fragment, String tag) {
+    private void doAddFragment(int containerId, BaseMultipleFragment fragment, String tag, boolean addBackStack) {
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
         int anim = fragment.getEnterInAnimation();
@@ -155,19 +174,20 @@ public abstract class BaseMultipleFragmentActivity extends BaseActivity
             anim = Constant.DEFAULT_ADD_ANIMATION[0];
         }
         transaction
-                .setCustomAnimations(anim,
-                        0, 0, 0) // add in animation
-                .add(containerId, fragment, tag)
-                .addToBackStack(tag)
-                .commit();
+                .setCustomAnimations(anim, 0, 0, 0) // add in animation
+                .add(containerId, fragment, tag);
+        if (addBackStack) {
+            transaction.addToBackStack(tag);
+        }
+        transaction.commit();
         getSupportFragmentManager().executePendingTransactions();
     }
 
     protected void replaceFragment(int containerId,
-                                   BaseMultipleFragment fragment, String tag, boolean clearStack) {
+                                   BaseMultipleFragment fragment, String tag, boolean clearBackStack) {
         FragmentManager fm = getSupportFragmentManager();
         if (fm != null) {
-            if (clearStack) {
+            if (clearBackStack) {
                 doReplaceFragment(containerId, fragment, tag);
             } else {
                 boolean isExisted = fm.findFragmentByTag(tag) != null;
@@ -181,7 +201,7 @@ public abstract class BaseMultipleFragmentActivity extends BaseActivity
                 } else {
                     if (fm.getBackStackEntryCount() > 1) {
                         BaseMultipleFragment top = getTopFragment(containerId);
-                        addFragment(containerId, fragment, tag);
+                        addFragment(containerId, fragment, tag, true);
                         if (top != null && !Utils.isEmpty(top.getTag()))
                             removeFragment(containerId, top.getTag());
                     } else {
@@ -218,6 +238,15 @@ public abstract class BaseMultipleFragmentActivity extends BaseActivity
                         .commit();
                 fm.executePendingTransactions();
             }
+        }
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        DLog.d(TAG, "onBackStackChanged");
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm != null) {
+            DLog.i(TAG, "onBackStackChanged: count = " + fm.getBackStackEntryCount());
         }
     }
 
@@ -288,17 +317,5 @@ public abstract class BaseMultipleFragmentActivity extends BaseActivity
             view.startAnimation(AnimationUtils.loadAnimation(this,
                     anim));
         }
-    }
-
-    @LayoutRes
-    @Override
-    public int getLoadingDialogLayoutResource() {
-        return R.layout.loading_dialog;
-    }
-
-    @LayoutRes
-    @Override
-    public int getGeneralDialogLayoutResource() {
-        return R.layout.general_dialog;
     }
 }

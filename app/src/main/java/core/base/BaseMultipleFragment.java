@@ -455,17 +455,17 @@ public abstract class BaseMultipleFragment extends Fragment implements
     }
 
     protected void addFragment(int containerId, BaseMultipleFragment fragment,
-                               String tag) {
+                               String tag, boolean addBackStack) {
         if (getActivity() != null
                 && getActivity() instanceof BaseMultipleFragmentActivity)
             ((BaseMultipleFragmentActivity) getActivity()).addFragment(
-                    containerId, fragment, tag);
+                    containerId, fragment, tag, addBackStack);
         else if (getActiveActivity() != null
                 && getActiveActivity() instanceof BaseMultipleFragmentActivity)
             ((BaseMultipleFragmentActivity) getActiveActivity()).addFragment(
-                    containerId, fragment, tag);
+                    containerId, fragment, tag, addBackStack);
         else
-            activeActivity.addFragment(containerId, fragment, tag);
+            activeActivity.addFragment(containerId, fragment, tag, addBackStack);
     }
 
     protected void replaceFragment(int containerId,
